@@ -1,0 +1,13 @@
+.git/
+.gitignore
+.vscode/
+.venv/
+venv/
+__pycache__/
+*.pyc
+*.sqlite3
+.env                 # CANNOT deploy my .env file with sensitive credentials.
+*.pem
+*.key
+*.log
+.DS_Store

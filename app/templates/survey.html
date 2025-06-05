@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Healthcare Spending Survey</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='style.css') }}"
+    />
+  </head>
+  <body>
+    <div class="container">
+      <h1>Healthcare Spending Survey</h1>
+
+      {% with messages = get_flashed_messages(with_categories=true) %} {% if
+      messages %} {% for category, message in messages %}
+      <div class="alert alert-{{ category }}">{{ message }}</div>
+      {% endfor %} {% endif %} {% endwith %}
+
+      <form method="POST">
+        <div class="form-group">
+          <label for="age">Age:</label>
+          <input
+            type="number"
+            id="age"
+            name="age"
+            required
+            min="18"
+            max="100"
+          />
+        </div>
+
+        <div class="form-group">
+          <label>Gender:</label>
+          <div class="radio-group">
+            <label
+              ><input type="radio" name="gender" value="Male" required />
+              Male</label
+            >
+            <label
+              ><input type="radio" name="gender" value="Female" /> Female</label
+            >
+            <label
+              ><input type="radio" name="gender" value="Other" /> Other</label
+            >
+            <label
+              ><input type="radio" name="gender" value="Prefer not to say" />
+              Prefer not to say</label
+            >
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="total_income">Total Monthly Income ($):</label>
+          <input
+            type="number"
+            id="total_income"
+            name="total_income"
+            required
+            min="0"
+            step="0.01"
+          />
+        </div>
+
+        <h3>Monthly Expenses ($)</h3>
+
+        <div class="expense-category">
+          <label
+            ><input type="checkbox" name="utilities_check" /> Utilities:</label
+          >
+          <input type="number" name="utilities" min="0" step="0.01" disabled />
+        </div>
+
+        <div class="expense-category">
+          <label
+            ><input type="checkbox" name="entertainment_check" />
+            Entertainment:</label
+          >
+          <input
+            type="number"
+            name="entertainment"
+            min="0"
+            step="0.01"
+            disabled
+          />
+        </div>
+
+        <div class="expense-category">
+          <label
+            ><input type="checkbox" name="school_fees_check" /> School
+            Fees:</label
+          >
+          <input
+            type="number"
+            name="school_fees"
+            min="0"
+            step="0.01"
+            disabled
+          />
+        </div>
+
+        <div class="expense-category">
+          <label
+            ><input type="checkbox" name="shopping_check" /> Shopping:</label
+          >
+          <input type="number" name="shopping" min="0" step="0.01" disabled />
+        </div>
+
+        <div class="expense-category">
+          <label
+            ><input type="checkbox" name="healthcare_check" />
+            Healthcare:</label
+          >
+          <input type="number" name="healthcare" min="0" step="0.01" disabled />
+        </div>
+
+        <button type="submit">Submit Survey</button>
+      </form>
+
+      <div class="admin-actions">
+        <a href="{{ url_for('main.export_data') }}" class="export-btn"
+          >Export Data to CSV</a
+        >
+      </div>
+    </div>
+
+    <script>
+      // Enable expense inputs when checkbox is checked
+      document
+        .querySelectorAll('input[type="checkbox"]')
+        .forEach((checkbox) => {
+          const inputName = checkbox.name.replace("_check", "");
+          const input = document.querySelector(`input[name="${inputName}"]`);
+
+          checkbox.addEventListener("change", () => {
+            input.disabled = !checkbox.checked;
+            if (!checkbox.checked) input.value = "";
+          });
+        });
+    </script>
+  </body>
+</html>
